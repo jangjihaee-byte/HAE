@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIHAE JANG | Architecture Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Noto Sans KR, Montserrat, DM Serif Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@200;300;400;500;700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                        mono: ['Montserrat', 'sans-serif'],
+                        serif: ['DM Serif Display', 'serif'],
+                    },
+                    colors: {
+                        bw: {
+                            50: '#ffffff',
+                            100: '#f6f6f6',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            600: '#525252',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                            950: '#0a0a0a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
+        }
+        .text-stroke {
+            -webkit-text-stroke: 1px #000000;
+            color: transparent;
+        }
+        .dark .text-stroke {
+            -webkit-text-stroke: 1px #ffffff;
+            color: transparent;
+        }
+        /* 건축 도면 느낌의 점선 보조 레이아웃 */
+        .blueprint-grid {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+        .dark .blueprint-grid {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-bw-50 text-bw-900 dark:bg-bw-950 dark:text-bw-100 transition-colors duration-300 blueprint-grid">
+
+    <!-- 네비게이션 바 -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-bw-50/80 dark:bg-bw-950/80 backdrop-blur-md border-b border-bw-900/10 dark:border-bw-100/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="font-mono text-lg font-black tracking-[0.25em] text-bw-900 dark:text-white flex items-center gap-2">
+                JIHAE JANG<span class="text-xs font-light text-bw-400">STUDIO</span>
+            </a>
+            
+            <!-- 데스크탑 메뉴 -->
+            <div class="hidden md:flex items-center space-x-10 font-mono text-[10px] uppercase tracking-[0.3em] font-semibold">
+                <a href="#about" class="hover:text-bw-400 transition-colors duration-200">ABOUT</a>
+                <a href="#projects" class="hover:text-bw-400 transition-colors duration-200">STUDIO WORKS</a>
+                <a href="#sketch" class="hover:text-bw-400 transition-colors duration-200">CANVAS</a>
+                <a href="#consultant" class="hover:text-bw-400 transition-colors duration-200">AI DESIGNER</a>
+                <a href="#contact" class="hover:text-bw-400 transition-colors duration-200">CONTACT</a>
+            </div>
+
+            <!-- 우측 기능 버튼들 -->
+            <div class="flex items-center space-x-4">
+                <!-- 테마 토글 버튼 -->
+                <button id="theme-toggle" class="p-2.5 rounded-full border border-bw-900/10 dark:border-bw-100/10 hover:bg-bw-100 dark:hover:bg-bw-900 transition-colors" aria-label="테마 전환">
+                    <i id="theme-icon" class="fas fa-moon text-sm"></i>
+                </button>
+                
+                <!-- 모바일 메뉴 버튼 -->
+                <button id="menu-btn" class="md:hidden p-2 text-bw-900 dark:text-white focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 모바일 메뉴 드롭다운 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-bw-50 dark:bg-bw-950 border-b border-bw-200 dark:border-bw-800 px-6 py-6 space-y-4 font-mono text-xs tracking-[0.2em]">
+            <a href="#about" class="block py-2 hover:text-bw-400 transition">ABOUT</a>
+            <a href="#projects" class="block py-2 hover:text-bw-400 transition">STUDIO WORKS</a>
+            <a href="#sketch" class="block py-2 hover:text-bw-400 transition">CANVAS</a>
+            <a href="#consultant" class="block py-2 hover:text-bw-400 transition">AI DESIGNER</a>
+            <a href="#contact" class="block py-2 hover:text-bw-400 transition">CONTACT</a>
+        </div>
+    </nav>
+
+    <!-- 영웅 영역 (Hero Section) -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- 배경선 그래픽 패턴 (대학생 설계 그리드 컨셉) -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col items-start justify-center">
+            <span class="font-mono text-bw-500 dark:text-bw-400 text-xs tracking-[0.6em] uppercase mb-5">Architecture Student & Spatial Researcher</span>
+            
+            <h1 class="font-mono text-5xl md:text-[7.5rem] font-black tracking-tight leading-[0.9] mb-8 text-bw-900 dark:text-white">
+                SIMPLICITY <br class="hidden md:block">
+                <span class="text-stroke font-light">REDEFINED.</span>
+            </h1>
+            
+            <p class="max-w-xl text-bw-500 dark:text-bw-400 text-xs md:text-sm leading-relaxed mb-10 font-light">
+                건축학과 학생 장지해의 아카이브입니다. 불필요함을 최소화한 단순성 속에서 형태와 구조, 그리고 빛이 직조하는 가장 깊은 공간감을 탐구합니다. 다듬어지지 않은 순수한 아이디어를 정밀한 선으로 구축합니다.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="#projects" class="bg-bw-900 text-white hover:bg-bw-100 hover:text-bw-900 border border-bw-900 dark:bg-white dark:text-bw-950 dark:hover:bg-bw-900 dark:hover:text-white dark:border-white font-mono text-[10px] tracking-widest uppercase font-bold py-4 px-8 transition-all duration-300 flex items-center gap-3">
+                    EXPLORE WORKS <i class="fas fa-arrow-right text-[10px]"></i>
+                </a>
+                <a href="#contact" class="border border-bw-900 hover:bg-bw-900 hover:text-white dark:border-white dark:hover:bg-white dark:hover:text-bw-950 font-mono text-[10px] tracking-widest uppercase font-bold py-4 px-8 transition-all duration-300">
+                    GET IN TOUCH
+                </a>
+            </div>
+        </div>
+
+        <!-- 스크롤 다운 가이드 -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[9px] tracking-[0.4em] opacity-50">
+            <span>SCROLL</span>
+            <div class="w-px h-10 bg-bw-900 dark:bg-white animate-pulse"></div>
+        </div>
+    </header>
+
+    <!-- 소개 섹션 (About Section) -->
+    <section id="about" class="py-28 bg-bw-100 dark:bg-[#0b0b0b] border-y border-bw-900/10 dark:border-bw-100/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- 아키텍트 이미지 영역 -->
+                <div class="relative group">
+                    <div class="absolute -top-3 -left-3 w-full h-full border border-bw-900/40 dark:border-bw-100/40 translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500"></div>
+                    <!-- 모던 B&W 선 다이어그램 스케치 (학습 아카데믹 무드) -->
+                    <div class="relative bg-bw-950 dark:bg-bw-900 aspect-[4/5] flex flex-col justify-between p-8 overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <span class="font-mono text-bw-400 text-[10px] tracking-widest">ABOUT STUDENT</span>
+                            <span class="text-white/10 font-mono text-5xl font-extrabold">01</span>
+                        </div>
+                        
+                        <!-- 건축 다이어그램 라인 (B&W 무드) -->
+                        <div class="absolute inset-x-0 bottom-0 opacity-15">
+                            <svg viewBox="0 0 100 120" class="w-full stroke-white stroke-[0.5] fill-none">
+                                <rect x="10" y="10" width="80" height="100"/>
+                                <line x1="10" y1="60" x2="90" y2="60"/>
+                                <line x1="50" y1="10" x2="50" y2="110"/>
+                                <circle cx="50" cy="60" r="30"/>
+                                <circle cx="50" cy="60" r="40" stroke-dasharray="2,2"/>
+                                <line x1="10" y1="10" x2="90" y2="110"/>
+                            </svg>
+                        </div>
+
+                        <div class="relative z-10">
+                            <h3 class="text-white text-3xl font-bold tracking-tight mb-2">장 지 해</h3>
+                            <p class="text-bw-300 font-mono text-xs tracking-widest mb-6">Architecture Major, B.Arch Student</p>
+                            <div class="text-white/70 text-xs space-y-2 font-light">
+                                <p class="flex justify-between border-b border-white/10 pb-1.5"><span>학력</span> <span>건축학과 (5년제) 재학 중</span></p>
+                                <p class="flex justify-between border-b border-white/10 pb-1.5"><span>관심 분야</span> <span>주거 형태학, 미니멀리즘 구조, 목구조</span></p>
+                                <p class="flex justify-between pb-1.5"><span>툴 활용</span> <span>Rhino, CAD, Revit, Twinmotion, V-Ray</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 텍스트 소개 영역 -->
+                <div class="flex flex-col justify-center">
+                    <span class="font-mono text-bw-400 text-xs tracking-[0.5em] uppercase mb-3">PERSPECTIVE</span>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-8">모든 구조적 불필요함의 정화, 그리고 공간 본연의 힘</h2>
+                    <p class="text-bw-500 dark:text-bw-400 mb-6 leading-relaxed text-sm font-light">
+                        건축 설계를 전공하며 공간을 짓는 기술보다 더 중요하게 여기는 것은 '덜어내는 훈련'입니다. 화려한 외피와 장식에서 벗어나 기하학적인 기본 구조, 물성(Materiality)의 진솔한 표현, 그리고 자연광의 유입 경로에 더 많은 주의를 기울입니다.
+                    </p>
+                    <p class="text-bw-500 dark:text-bw-400 mb-10 leading-relaxed text-sm font-light">
+                        학생으로서의 실험적 상상력과 엄밀한 건축 설계 표준 간의 균형을 찾아가고 있습니다. 이 포트폴리오 사이트에는 설계 스튜디오 3학년부터 5학년 동안 고민해 온 구축적 해법과 아이디어 드로잉을 담았습니다.
+                    </p>
+
+                    <!-- 핵심 가치 3요소 (B&W 모던 넘버링) -->
+                    <div class="grid grid-cols-3 gap-6 border-t border-bw-900/10 dark:border-bw-100/10 pt-8 font-mono">
+                        <div>
+                            <span class="text-bw-900 dark:text-white text-xl font-bold">01 / CONCEPT</span>
+                            <h4 class="text-[10px] text-bw-500 dark:text-bw-400 mt-2 tracking-wider">논리적 개념화</h4>
+                        </div>
+                        <div>
+                            <span class="text-bw-900 dark:text-white text-xl font-bold">02 / LINE</span>
+                            <h4 class="text-[10px] text-bw-500 dark:text-bw-400 mt-2 tracking-wider">정교한 선의 표현</h4>
+                        </div>
+                        <div>
+                            <span class="text-bw-900 dark:text-white text-xl font-bold">03 / VOID</span>
+                            <h4 class="text-[10px] text-bw-500 dark:text-bw-400 mt-2 tracking-wider">비움으로써 열리는 경험</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 프로젝트 포트폴리오 섹션 (Projects Section) -->
+    <section id="projects" class="py-28 bg-bw-50 dark:bg-bw-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                <div>
+                    <span class="font-mono text-bw-400 text-xs tracking-[0.5em] uppercase mb-3">STUDIO ARCHIVES</span>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">학부 설계 및 공모전 작품</h2>
+                </div>
+                <!-- 카테고리 필터 (심플 B&W 버튼 스타일) -->
+                <div class="flex flex-wrap gap-2 mt-8 md:mt-0 font-mono text-[10px] uppercase tracking-wider">
+                    <button class="filter-btn active px-4 py-2 border border-bw-900 dark:border-white bg-bw-900 text-white dark:bg-white dark:text-bw-950 transition-colors duration-200" data-filter="all">ALL</button>
+                    <button class="filter-btn px-4 py-2 border border-bw-200 dark:border-bw-800 hover:border-bw-900 dark:hover:border-white transition-colors duration-200" data-filter="studio">STUDIO DESIGN</button>
+                    <button class="filter-btn px-4 py-2 border border-bw-200 dark:border-bw-800 hover:border-bw-900 dark:hover:border-white transition-colors duration-200" data-filter="contest">COMPETITION</button>
+                    <button class="filter-btn px-4 py-2 border border-bw-200 dark:border-bw-800 hover:border-bw-900 dark:hover:border-white transition-colors duration-200" data-filter="concept">EXPERIMENTAL</button>
+                </div>
+            </div>
+
+            <!-- 프로젝트 그리드 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- 프로젝트 1 (졸업작품 등 학부 메인스튜디오) -->
+                <div class="project-item group cursor-pointer border border-bw-900/5 dark:border-bw-100/5 p-4 bg-bw-100/40 dark:bg-bw-900/20" data-category="studio" onclick="openProjectModal('p1')">
+                    <div class="relative overflow-hidden aspect-[4/3] bg-bw-900/5 dark:bg-bw-100/5 border border-bw-900/10 dark:border-bw-100/10">
+                        <!-- 미니멀 B&W 드로잉 구조도 -->
+                        <div class="absolute inset-0 flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                            <svg class="w-full h-full opacity-75 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                                <line x1="20" y1="130" x2="180" y2="130" stroke-width="1.5" />
+                                <rect x="40" y="30" width="120" height="100" />
+                                <line x1="40" y1="65" x2="160" y2="65" stroke-dasharray="2,2" />
+                                <line x1="100" y1="30" x2="100" y2="130" />
+                                <circle cx="100" cy="65" r="20" />
+                            </svg>
+                        </div>
+                        <span class="absolute top-4 left-4 bg-bw-900 text-white dark:bg-white dark:text-bw-950 font-mono text-[8px] font-bold tracking-widest py-1 px-2">GRADUATION WORK</span>
+                    </div>
+                    <div class="mt-5">
+                        <span class="font-mono text-bw-400 text-xs">5학년 1학기 설계 | 대지: 종로</span>
+                        <h3 class="font-bold text-lg group-hover:text-bw-500 transition-colors mt-1">경계 없는 전시장 (Borderless Void)</h3>
+                        <p class="text-bw-500 text-xs mt-1">기존 문화재 경계 구역과의 공존을 제안하는 도시 전시장</p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 2 (공모전) -->
+                <div class="project-item group cursor-pointer border border-bw-900/5 dark:border-bw-100/5 p-4 bg-bw-100/40 dark:bg-bw-900/20" data-category="contest" onclick="openProjectModal('p2')">
+                    <div class="relative overflow-hidden aspect-[4/3] bg-bw-900/5 dark:bg-bw-100/5 border border-bw-900/10 dark:border-bw-100/10">
+                        <div class="absolute inset-0 flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                            <svg class="w-full h-full opacity-75 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                                <line x1="10" y1="130" x2="190" y2="130" stroke-width="1.5" />
+                                <polygon points="30,130 50,50 150,50 170,130" />
+                                <line x1="50" y1="50" x2="170" y2="130" />
+                                <line x1="150" y1="50" x2="30" y2="130" />
+                            </svg>
+                        </div>
+                        <span class="absolute top-4 left-4 bg-bw-900 text-white dark:bg-white dark:text-bw-950 font-mono text-[8px] font-bold tracking-widest py-1 px-2">COMPETITION AWARD</span>
+                    </div>
+                    <div class="mt-5">
+                        <span class="font-mono text-bw-400 text-xs">아이디어 공모전 입선 | 목구조</span>
+                        <h3 class="font-bold text-lg group-hover:text-bw-500 transition-colors mt-1">나무그늘 파빌리온 (Tree Canopy)</h3>
+                        <p class="text-bw-500 text-xs mt-1">프리fabric 중첩형 유닛을 활용한 이동식 탄소중립 대기 쉼터</p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 3 (실험적 디자인) -->
+                <div class="project-item group cursor-pointer border border-bw-900/5 dark:border-bw-100/5 p-4 bg-bw-100/40 dark:bg-bw-900/20" data-category="concept" onclick="openProjectModal('p3')">
+                    <div class="relative overflow-hidden aspect-[4/3] bg-bw-900/5 dark:bg-bw-100/5 border border-bw-900/10 dark:border-bw-100/10">
+                        <div class="absolute inset-0 flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                            <svg class="w-full h-full opacity-75 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                                <line x1="10" y1="130" x2="190" y2="130" />
+                                <path d="M 30,130 Q 100,0 170,130" />
+                                <circle cx="100" cy="55" r="15" />
+                                <line x1="100" y1="55" x2="100" y2="130" stroke-dasharray="3,1" />
+                            </svg>
+                        </div>
+                        <span class="absolute top-4 left-4 bg-bw-900 text-white dark:bg-white dark:text-bw-950 font-mono text-[8px] font-bold tracking-widest py-1 px-2">EXPERIMENTAL</span>
+                    </div>
+                    <div class="mt-5">
+                        <span class="font-mono text-bw-400 text-xs">디지털 모델링 랩 | 파라메트릭</span>
+                        <h3 class="font-bold text-lg group-hover:text-bw-500 transition-colors mt-1">빛의 주름 (Folded Light)</h3>
+                        <p class="text-bw-500 text-xs mt-1">구조적인 접기 기법(Paper folding)을 모티브로 삼은 입면 유닛</p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 4 (학부 중기 스튜디오) -->
+                <div class="project-item group cursor-pointer border border-bw-900/5 dark:border-bw-100/5 p-4 bg-bw-100/40 dark:bg-bw-900/20" data-category="studio" onclick="openProjectModal('p4')">
+                    <div class="relative overflow-hidden aspect-[4/3] bg-bw-900/5 dark:bg-bw-100/5 border border-bw-900/10 dark:border-bw-100/10">
+                        <div class="absolute inset-0 flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                            <svg class="w-full h-full opacity-75 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                                <line x1="20" y1="130" x2="180" y2="130" stroke-width="1.5" />
+                                <rect x="30" y="50" width="40" height="80" />
+                                <rect x="80" y="30" width="40" height="100" />
+                                <rect x="130" y="70" width="40" height="60" />
+                            </svg>
+                        </div>
+                        <span class="absolute top-4 left-4 bg-bw-900 text-white dark:bg-white dark:text-bw-950 font-mono text-[8px] font-bold tracking-widest py-1 px-2">STUDIO 4A</span>
+                    </div>
+                    <div class="mt-5">
+                        <span class="font-mono text-bw-400 text-xs">4학년 1학기 설계 | 대지: 마포</span>
+                        <h3 class="font-bold text-lg group-hover:text-bw-500 transition-colors mt-1">수직 도서관 (The Vertical Desk)</h3>
+                        <p class="text-bw-500 text-xs mt-1">개인의 집중과 타인의 교류를 조율하는 마이크로 입체 열람 공간</p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 5 (현대 주거단지 스튜디오) -->
+                <div class="project-item group cursor-pointer border border-bw-900/5 dark:border-bw-100/5 p-4 bg-bw-100/40 dark:bg-bw-900/20" data-category="studio" onclick="openProjectModal('p5')">
+                    <div class="relative overflow-hidden aspect-[4/3] bg-bw-900/5 dark:bg-bw-100/5 border border-bw-900/10 dark:border-bw-100/10">
+                        <div class="absolute inset-0 flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                            <svg class="w-full h-full opacity-75 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                                <line x1="20" y1="130" x2="180" y2="130" stroke-width="1.5" />
+                                <rect x="40" y="80" width="45" height="50" />
+                                <rect x="115" y="80" width="45" height="50" />
+                                <path d="M 40,80 Q 100,20 160,80" />
+                            </svg>
+                        </div>
+                        <span class="absolute top-4 left-4 bg-bw-900 text-white dark:bg-white dark:text-bw-950 font-mono text-[8px] font-bold tracking-widest py-1 px-2">STUDIO 3B</span>
+                    </div>
+                    <div class="mt-5">
+                        <span class="font-mono text-bw-400 text-xs">3학년 2학기 설계 | 대지: 동대문</span>
+                        <h3 class="font-bold text-lg group-hover:text-bw-500 transition-colors mt-1">한옥 필지를 품은 주택 (Inbetween Hanok)</h3>
+                        <p class="text-bw-500 text-xs mt-1">노후된 한옥 필지의 기억과 궤적을 보존한 현대 복합 거주 시설</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 인터랙티브 스케치북 섹션 (Sketch Canvas) -->
+    <section id="sketch" class="py-28 bg-bw-100 dark:bg-[#0b0b0b] border-y border-bw-900/10 dark:border-bw-100/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="font-mono text-bw-400 text-xs tracking-[0.5em] uppercase mb-3">IDEA BOARD</span>
+                <h2 class="text-3xl font-bold tracking-tight mb-4">건축 드로잉 캔버스</h2>
+                <p class="text-bw-500 dark:text-bw-400 text-xs md:text-sm font-light">
+                    설계 기획을 구성할 때 종이에 빠르게 펜을 끄적이듯, 장지해의 디지털 제도판 위에 자유로운 스케치를 그려보세요. 우측 컨트롤러를 이용해 브러시 크기 조절이 가능합니다.
+                </p>
+            </div>
+
+            <div class="bg-white dark:bg-bw-900 border border-bw-900/10 dark:border-bw-100/10 rounded-none p-6 shadow-sm">
+                <!-- 캔버스 컨트롤러 (B&W 모던 미니멀 스타일) -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-bw-900/10 dark:border-bw-100/10">
+                    <div class="flex items-center space-x-3">
+                        <label class="font-mono text-[10px] uppercase tracking-widest font-semibold">Color:</label>
+                        <div class="flex items-center space-x-2">
+                            <!-- B&W 테마에 적절한 펜 색상 선정 -->
+                            <button onclick="setPenColor('#000000')" class="w-5 h-5 rounded-full bg-black border border-white dark:border-neutral-700"></button>
+                            <button onclick="setPenColor('#ffffff')" class="w-5 h-5 rounded-full bg-white border border-neutral-300 dark:border-neutral-600"></button>
+                            <button onclick="setPenColor('#737373')" class="w-5 h-5 rounded-full bg-bw-500 border border-white"></button>
+                            <button onclick="setPenColor('#ef4444')" class="w-5 h-5 rounded-full bg-red-500 border border-white"></button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center space-x-2">
+                            <label class="font-mono text-[10px] uppercase tracking-widest font-semibold">Brush Width:</label>
+                            <input type="range" id="brush-size" min="1" max="10" value="1.5" step="0.5" class="w-24 accent-bw-900 dark:accent-white">
+                        </div>
+                        <button onclick="clearCanvas()" class="font-mono text-[10px] uppercase tracking-widest font-bold bg-bw-900 text-white dark:bg-white dark:text-bw-950 px-4 py-2 transition-colors hover:bg-bw-500">
+                            <i class="fas fa-eraser mr-1.5"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 드로잉 캔버스 (도면 격자 무드 유지) -->
+                <div class="relative w-full aspect-[2/1] bg-bw-50 dark:bg-bw-950 border border-bw-900/10 dark:border-bw-100/10 rounded-none overflow-hidden cursor-crosshair blueprint-grid">
+                    <canvas id="sketch-canvas" class="w-full h-full block"></canvas>
+                    <div id="canvas-hint" class="absolute inset-0 flex items-center justify-center pointer-events-none text-bw-400 text-[10px] font-light select-none tracking-widest uppercase">
+                        이곳에 설계 아이디어 또는 구조 단면도를 드로잉해 보세요
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI 건축 컨설턴트 챗봇 (AI Consulting) -->
+    <section id="consultant" class="py-28 bg-bw-50 dark:bg-bw-950 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="font-mono text-bw-400 text-xs tracking-[0.5em] uppercase mb-3">AI DESIGN ASSISTANT</span>
+                <h2 class="text-3xl font-bold tracking-tight mb-4">공간 스타일 시뮬레이션</h2>
+                <p class="text-bw-500 dark:text-bw-400 text-xs md:text-sm font-light">
+                    원하시는 건물의 용도나 대지 요건, 추구하는 구조적 철학을 자유롭게 입력하시면 장지해의 AI 건축 어시스턴트가 최적의 설계 배치 전략과 어울리는 무드를 제안해 드립니다.
+                </p>
+            </div>
+
+            <!-- 대화창 구성 (B&W 모던 터미널/에디터 무드) -->
+            <div class="bg-white dark:bg-bw-900 rounded-none shadow-sm border border-bw-900/10 dark:border-bw-100/10 overflow-hidden">
+                <div class="bg-bw-900 dark:bg-bw-950 text-white p-4 flex items-center justify-between border-b border-bw-800">
+                    <div class="flex items-center gap-3 font-mono">
+                        <div class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></div>
+                        <span class="text-[10px] uppercase tracking-widest font-semibold">JIHAE JANG AI-LAB v1.0</span>
+                    </div>
+                    <span class="text-[9px] font-mono text-bw-400">POWERED BY GEMINI 2.5</span>
+                </div>
+                
+                <!-- 대화 기록 -->
+                <div id="chat-box" class="h-96 overflow-y-auto p-6 space-y-4 text-xs md:text-sm scroll-smooth">
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-none bg-bw-900 dark:bg-white flex items-center justify-center text-white dark:text-bw-950 text-[10px] font-mono shrink-0 font-bold">
+                            AI
+                        </div>
+                        <div class="bg-bw-100 dark:bg-bw-950 p-3.5 rounded-none max-w-[85%] leading-relaxed font-light">
+                            안녕하세요! 건축주 및 학부 디자인 학우 여러분. 
+                            스튜디오 프로젝트의 컨셉 설계 단계에서 구조적 조형, 빛의 연출, 마감재 성향 또는 대지 분석 과정에 조언이 필요하다면 말씀해 주세요. 
+                            건축가 장지해의 철학에 맞춰 미니멀하고 세련된 설루션을 가이드하겠습니다. 📐
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 사용자 입력 폼 -->
+                <form id="chat-form" class="p-4 border-t border-bw-900/10 dark:border-bw-100/10 flex gap-2 bg-bw-100/50 dark:bg-bw-950/50">
+                    <input type="text" id="chat-input" placeholder="질문 예: '경사지가 있는 대지에서 중정을 활용한 단독주택 설계 배치 방향은?'" class="flex-1 bg-white dark:bg-bw-900 border border-bw-900/10 dark:border-bw-100/10 rounded-none px-4 py-3 text-xs md:text-sm focus:outline-none focus:border-bw-900 dark:focus:border-white dark:text-white" required>
+                    <button type="submit" class="bg-bw-900 dark:bg-white text-white dark:text-bw-950 hover:bg-bw-500 dark:hover:bg-bw-300 px-6 py-3 text-xs font-mono uppercase tracking-widest font-bold transition-colors">
+                        SEND
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 문의하기 (Contact Section) -->
+    <section id="contact" class="py-28 bg-bw-100 dark:bg-[#0b0b0b] border-t border-bw-900/10 dark:border-bw-100/10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <div>
+                    <span class="font-mono text-bw-400 text-xs tracking-[0.5em] uppercase mb-3">GET IN TOUCH</span>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-8">오픈 크리틱 및 프로젝트 협업 문의</h2>
+                    <p class="text-bw-500 dark:text-bw-400 mb-8 leading-relaxed text-sm font-light">
+                        개인 스튜디오 설계 공유, 대학생 연합 건축 동아리 활동, 각종 파빌리온 설치 공모전 협업 등 흥미로운 제안을 항시 환영합니다. 공간과 무형의 가치에 대한 건강한 피드백을 주고받을 분들의 메시지를 기다립니다.
+                    </p>
+
+                    <!-- 연락처 정보 (B&W 모던 엠블럼형) -->
+                    <div class="space-y-6 font-mono text-xs">
+                        <div class="flex items-center gap-5">
+                            <div class="w-10 h-10 rounded-none border border-bw-900/10 dark:border-bw-100/10 flex items-center justify-center text-bw-900 dark:text-white">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[9px] text-bw-400 uppercase tracking-widest">EMAIL</h4>
+                                <p class="font-bold text-sm mt-0.5">jihae.jang@architecture.ac.kr</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <div class="w-10 h-10 rounded-none border border-bw-900/10 dark:border-bw-100/10 flex items-center justify-center text-bw-900 dark:text-white">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[9px] text-bw-400 uppercase tracking-widest">PHONE</h4>
+                                <p class="font-bold text-sm mt-0.5">+82 (0)10-5678-1234</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <div class="w-10 h-10 rounded-none border border-bw-900/10 dark:border-bw-100/10 flex items-center justify-center text-bw-900 dark:text-white">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[9px] text-bw-400 uppercase tracking-widest">STUDIO PLACE</h4>
+                                <p class="font-bold text-sm mt-0.5">서울특별시 성동구 사근동 대학로 설계동 402호</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 문의 폼 양식 (B&W 직선적 쉐입) -->
+                <div class="bg-white dark:bg-bw-900 rounded-none p-8 border border-bw-900/10 dark:border-bw-100/10 shadow-sm">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] font-mono uppercase tracking-widest mb-2 font-semibold">소속 및 성함 *</label>
+                            <input type="text" required class="w-full bg-bw-50 dark:bg-bw-950 border border-bw-900/10 dark:border-bw-100/10 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-bw-900 dark:focus:border-white dark:text-white">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest mb-2 font-semibold">이메일 *</label>
+                                <input type="email" required class="w-full bg-bw-50 dark:bg-bw-950 border border-bw-900/10 dark:border-bw-100/10 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-bw-900 dark:focus:border-white dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest mb-2 font-semibold">연락처 *</label>
+                                <input type="tel" required class="w-full bg-bw-50 dark:bg-bw-950 border border-bw-900/10 dark:border-bw-100/10 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-bw-900 dark:focus:border-white dark:text-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono uppercase tracking-widest mb-2 font-semibold">협업 카테고리</label>
+                            <select class="w-full bg-bw-50 dark:bg-bw-950 border border-bw-900/10 dark:border-bw-100/10 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-bw-900 dark:focus:border-white dark:text-white font-mono uppercase text-xs tracking-wider">
+                                <option>학생 디자인 스튜디오 오픈 크리틱</option>
+                                <option>공모전 / 전시 공간 기획 협업 제안</option>
+                                <option>학술 포럼 / 연구 지원 문의</option>
+                                <option>기타 개인적인 스터디 교류</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono uppercase tracking-widest mb-2 font-semibold">협업 및 메시지 상세내용 *</label>
+                            <textarea rows="4" required placeholder="공유할 프로젝트 성격, 일정, 협업에 관심을 두게 된 계기 등을 기술해 주세요." class="w-full bg-bw-50 dark:bg-bw-950 border border-bw-900/10 dark:border-bw-100/10 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-bw-900 dark:focus:border-white dark:text-white"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-bw-900 dark:bg-white text-white dark:text-bw-950 hover:bg-bw-500 dark:hover:bg-bw-300 font-mono text-[10px] uppercase tracking-widest font-bold py-4 transition-colors">
+                            SEND MESSAGE <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="bg-bw-950 text-white py-12 border-t border-bw-800 font-mono">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div>
+                <h3 class="text-base font-black tracking-widest mb-1">JIHAE JANG<span class="font-light text-xs text-bw-500 ml-1">STUDIO</span></h3>
+                <p class="text-[9px] text-bw-500">© 2026 JIHAE JANG. B.Arch Student Portfolio. Built with Simple Geometry.</p>
+            </div>
+            
+            <div class="flex space-x-6 text-sm text-bw-500">
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-behance"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 프로젝트 상세 모달 창 -->
+    <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bw-950/80 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-bw-900 text-bw-900 dark:text-white rounded-none max-w-3xl w-full overflow-hidden shadow-sm relative border border-bw-900/10 dark:border-bw-100/10">
+            <!-- 닫기 버튼 -->
+            <button onclick="closeProjectModal()" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-none bg-bw-900/10 hover:bg-bw-900/20 dark:bg-white/10 dark:hover:bg-white/20 flex items-center justify-center transition">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <!-- 모달 이미지/기하학 패턴 영역 -->
+            <div class="relative bg-bw-100 dark:bg-bw-950 h-72 flex items-center justify-center border-b border-bw-900/10 dark:border-bw-100/10">
+                <div id="modal-art-fallback" class="w-full h-full flex items-center justify-center p-10">
+                    <!-- 스크립트에서 SVG 교체 -->
+                </div>
+            </div>
+
+            <!-- 모달 콘텐츠 -->
+            <div class="p-8">
+                <span id="modal-category" class="font-mono text-bw-400 text-[9px] font-bold tracking-widest uppercase">STUDIO WORK</span>
+                <h3 id="modal-title" class="font-bold text-2xl mt-1 mb-4">프로젝트 제목</h3>
+                <p id="modal-desc" class="text-bw-500 dark:text-bw-400 text-xs md:text-sm leading-relaxed mb-6 font-light">설명이 들어갑니다.</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-bw-900/10 dark:border-bw-100/10 pt-6 text-[10px] font-mono">
+                    <div>
+                        <span class="text-bw-400 block">설계 대지</span>
+                        <strong id="modal-location" class="text-xs text-bw-900 dark:text-white">서울시 마포구</strong>
+                    </div>
+                    <div>
+                        <span class="text-bw-400 block">주요 구조</span>
+                        <strong id="modal-area" class="text-xs text-bw-900 dark:text-white">철골철근 콘크리트조</strong>
+                    </div>
+                    <div>
+                        <span class="text-bw-400 block">진행 학기</span>
+                        <strong id="modal-year" class="text-xs text-bw-900 dark:text-white">4학년 1학기</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 메시지 상자 (Browser Alert 대용) -->
+    <div id="custom-alert" class="fixed bottom-6 right-6 z-50 bg-bw-900 text-white dark:bg-white dark:text-bw-950 px-6 py-4 rounded-none shadow-sm border border-bw-900 dark:border-white transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3">
+        <i class="fas fa-check-circle"></i>
+        <span id="alert-message" class="text-[10px] font-mono tracking-widest uppercase font-bold">SUCCESSFULLY TRANSMITTED</span>
+    </div>
+
+    <!-- 스크립트 로직 -->
+    <script>
+        // 1. 다크모드 관리 설정
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        // 초기 로컬 스토리지에 따른 설정 적용
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+                // 캔버스 모눈 그리드 갱신
+                setTimeout(resizeCanvas, 100);
+            } else {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+                // 캔버스 모눈 그리드 갱신
+                setTimeout(resizeCanvas, 100);
+            }
+        });
+
+        // 2. 모바일 내비게이션 메뉴 토글
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 모바일 내비 메뉴 클릭 시 드롭다운 닫기
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 3. 프로젝트 필터링 기능
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectItems = document.querySelectorAll('.project-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 이전 액티브 클래스 제거 및 새 액티브 지정
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-bw-900', 'text-white', 'dark:bg-white', 'dark:text-bw-950');
+                    b.classList.add('border-bw-200', 'dark:border-bw-800');
+                });
+                btn.classList.add('active', 'bg-bw-900', 'text-white', 'dark:bg-white', 'dark:text-bw-950');
+                btn.classList.remove('border-bw-200', 'dark:border-bw-800');
+
+                const filter = btn.getAttribute('data-filter');
+                projectItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // 4. 프로젝트 가상 DB & 모달 로직
+        const projectsData = {
+            p1: {
+                title: '경계 없는 전시장 (Borderless Void)',
+                category: 'STUDIO DESIGN - GRADUATION',
+                location: '서울특별시 종로구 인사동 일대',
+                area: '철골조 및 글래스 커튼월 혼합구조',
+                year: '5학년 1학기 설계',
+                desc: '전통적인 역사 유적지와의 조우를 주제로 한 미니멀 전시 공간입니다. 건물의 중심부를 거대한 원형 보이드(Void) 구역으로 개방하여, 주변 유적지의 소실점이 자연스럽게 투사되도록 계획했습니다. 지중화된 입출입 설계로 상부 시각 피로를 최소화했습니다.',
+                svg: `<svg class="w-1/2 h-full opacity-90 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                        <line x1="20" y1="130" x2="180" y2="130" stroke-width="1.5" />
+                        <rect x="40" y="30" width="120" height="100" />
+                        <line x1="40" y1="65" x2="160" y2="65" stroke-dasharray="2,2" />
+                        <line x1="100" y1="30" x2="100" y2="130" />
+                        <circle cx="100" cy="65" r="25" />
+                      </svg>`
+            },
+            p2: {
+                title: '나무그늘 파빌리온 (Tree Canopy)',
+                category: 'COMPETITION AWARD',
+                location: '상암 한강 시민 공원',
+                area: '중목구조 공법 (친환경 엔지니어링 우드)',
+                year: '대학생 연합 목구조 공모전',
+                desc: '모듈러 형태를 조합해 도시 틈새 부지에 즉각 배치할 수 있는 중목 구조 파빌리온입니다. 가벼운 목재를 사용해 조립식 시공이 가능하며, 상부의 날카로운 박공 지붕 디테일은 한낮에 복사되는 거친 열기를 여과 없이 굴절시켜 쉼터 내부 온도를 유연하게 낮춥니다.',
+                svg: `<svg class="w-1/2 h-full opacity-90 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                        <line x1="10" y1="130" x2="190" y2="130" stroke-width="1.5" />
+                        <polygon points="30,130 50,50 150,50 170,130" />
+                        <line x1="50" y1="50" x2="170" y2="130" />
+                        <line x1="150" y1="50" x2="30" y2="130" />
+                      </svg>`
+            },
+            p3: {
+                title: '빛의 주름 (Folded Light Unit)',
+                category: 'EXPERIMENTAL CONCEPT',
+                location: '개념 연구 모델 (Conceptual Studio)',
+                area: '메탈 루버 패널 기법',
+                year: '디지털 조형 설계 랩',
+                desc: '파라메트릭 코딩 툴을 응용해 설계한 금속 외장재 조형입니다. 빛의 반사각을 파편화하여 정지된 건축 피막이 태양의 일주 흐름에 맞춰 역동적인 입체 음영을 만들어내도록 종이접기 기하학적 형태를 접목했습니다.',
+                svg: `<svg class="w-1/2 h-full opacity-90 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                        <line x1="10" y1="130" x2="190" y2="130" />
+                        <path d="M 30,130 Q 100,0 170,130" />
+                        <circle cx="100" cy="55" r="15" />
+                        <line x1="100" y1="55" x2="100" y2="130" stroke-dasharray="3,1" />
+                      </svg>`
+            },
+            p4: {
+                title: '수직 도서관 (The Vertical Desk)',
+                category: 'STUDIO DESIGN 4A',
+                location: '서울특별시 마포구 대흥동',
+                area: '철골 트러스 현수 구조',
+                year: '4학년 1학기 설계',
+                desc: '대지의 협소함을 효율적인 슬래브의 다단 변화 및 스킵 플로어를 도입해 극복한 층별 독립 스터디 도서관 프로젝트입니다. 책을 읽는 사람의 행위에 알맞도록 벽체의 두께와 개구부를 변주하여 깊고 조용한 동선을 제안했습니다.',
+                svg: `<svg class="w-1/2 h-full opacity-90 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                        <line x1="20" y1="130" x2="180" y2="130" stroke-width="1.5" />
+                        <rect x="30" y="50" width="40" height="80" />
+                        <rect x="80" y="30" width="40" height="100" />
+                        <rect x="130" y="70" width="40" height="60" />
+                      </svg>`
+            },
+            p5: {
+                title: '한옥 필지를 품은 주택 (Inbetween Hanok)',
+                category: 'STUDIO DESIGN 3B',
+                location: '서울특별시 동대문구 용두동 일대',
+                area: '노출 콘크리트 및 전통 목조 접합 공법',
+                year: '3학년 2학기 설계',
+                desc: '용두동 골목 안 낡은 한옥 부지를 새롭게 해석한 모던 공동 주거 단위입니다. 보행자의 흐름을 가로막던 고유 필지 구획을 중정형 보이드 통로로 리셋하여 골목의 바람길과 이웃 간의 소통을 동시에 여는 실험을 단행했습니다.',
+                svg: `<svg class="w-1/2 h-full opacity-90 stroke-bw-900 dark:stroke-white fill-none stroke-1" viewBox="0 0 200 150">
+                        <line x1="20" y1="130" x2="180" y2="130" stroke-width="1.5" />
+                        <rect x="40" y="80" width="45" height="50" />
+                        <rect x="115" y="80" width="45" height="50" />
+                        <path d="M 40,80 Q 100,20 160,80" />
+                      </svg>`
+            }
+        };
+
+        const modal = document.getElementById('project-modal');
+        const modalCategory = document.getElementById('modal-category');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalLocation = document.getElementById('modal-location');
+        const modalArea = document.getElementById('modal-area');
+        const modalYear = document.getElementById('modal-year');
+        const modalArtFallback = document.getElementById('modal-art-fallback');
+
+        function openProjectModal(id) {
+            const data = projectsData[id];
+            if (!data) return;
+
+            modalCategory.innerText = data.category;
+            modalTitle.innerText = data.title;
+            modalDesc.innerText = data.desc;
+            modalLocation.innerText = data.location;
+            modalArea.innerText = data.area;
+            modalYear.innerText = data.year;
+            modalArtFallback.innerHTML = data.svg;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            modal.classList.add('hidden');
+        }
+
+        // 모달창 바깥 클릭 시 닫기
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeProjectModal();
+            }
+        });
+
+        // 5. 드로잉 스케치 캔버스 시스템
+        const canvas = document.getElementById('sketch-canvas');
+        const ctx = canvas.getContext('2d');
+        const brushSizeInput = document.getElementById('brush-size');
+        const canvasHint = document.getElementById('canvas-hint');
+        
+        let isDrawing = false;
+        let penColor = '#000000';
+
+        // 다크모드 대응 기본 펜 색상 자동 변경
+        function adjustDefaultPenColor() {
+            if (document.documentElement.classList.contains('dark')) {
+                penColor = '#ffffff'; // 다크모드는 기본 펜 색상이 흰색
+            } else {
+                penColor = '#000000'; // 라이트모드는 기본 펜 색상이 검은색
+            }
+        }
+        adjustDefaultPenColor();
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            drawSketchGrid();
+        }
+
+        function drawSketchGrid() {
+            ctx.strokeStyle = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
+            ctx.lineWidth = 0.5;
+            const size = 20; // 스케치 보조용 모눈 크기
+            for(let x=0; x<canvas.width; x+=size){
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for(let y=0; y<canvas.height; y+=size){
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+
+        window.addEventListener('load', () => {
+            resizeCanvas();
+        });
+        window.addEventListener('resize', resizeCanvas);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            canvasHint.classList.add('hidden');
+            draw(e);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            ctx.lineWidth = brushSizeInput.value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = penColor;
+
+            const rect = canvas.getBoundingClientRect();
+            let clientX, clientY;
+
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e);
+        }, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        }, { passive: false });
+
+        function setPenColor(color) {
+            penColor = color;
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSketchGrid();
+            canvasHint.classList.remove('hidden');
+        }
+
+        // 6. Gemini API 기반 AI 건축학도 어시스턴트
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatBox = document.getElementById('chat-box');
+        const apiKey = ""; // 런타임에 빈 문자열로 초기화되며 실제 구동시 주입됩니다.
+
+        async function handleChatSubmit(e) {
+            e.preventDefault();
+            const userMessageText = chatInput.value.trim();
+            if(!userMessageText) return;
+
+            appendMessage(userMessageText, 'user');
+            chatInput.value = '';
+
+            const loaderId = appendLoadingIndicator();
+
+            try {
+                const botResponse = await callGeminiAPI(userMessageText);
+                removeLoadingIndicator(loaderId);
+                appendMessage(botResponse, 'bot');
+            } catch (err) {
+                removeLoadingIndicator(loaderId);
+                appendMessage("서버와의 일시적인 정렬 이상으로 연결 오류가 발생했습니다. 설계안 분석을 위해 질문을 재입력해 주세요.", 'bot');
+            }
+        }
+
+        chatForm.addEventListener('submit', handleChatSubmit);
+
+        function appendMessage(text, sender) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 ' + (sender === 'user' ? 'justify-end' : 'justify-start');
+
+            const contentHTML = sender === 'user' 
+                ? `<div class="bg-bw-900 text-white dark:bg-white dark:text-bw-950 p-3.5 rounded-none max-w-[85%] leading-relaxed">${text}</div>`
+                : `<div class="w-7 h-7 rounded-none bg-bw-900 dark:bg-white flex items-center justify-center text-white dark:text-bw-950 text-[10px] font-mono shrink-0 font-bold">AI</div>
+                   <div class="bg-bw-100 dark:bg-bw-900 p-3.5 rounded-none max-w-[85%] leading-relaxed font-light whitespace-pre-line">${text}</div>`;
+
+            wrapper.innerHTML = contentHTML;
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function appendLoadingIndicator() {
+            const id = 'loader-' + Date.now();
+            const wrapper = document.createElement('div');
+            wrapper.id = id;
+            wrapper.className = 'flex gap-3 justify-start';
+            wrapper.innerHTML = `
+                <div class="w-7 h-7 rounded-none bg-bw-900 dark:bg-white flex items-center justify-center text-white dark:text-bw-950 text-[10px] font-mono shrink-0 font-bold">AI</div>
+                <div class="bg-bw-100 dark:bg-bw-900 p-3.5 rounded-none max-w-[85%] flex items-center gap-1.5 py-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-bw-500 animate-bounce"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-bw-500 animate-bounce [animation-delay:0.2s]"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-bw-500 animate-bounce [animation-delay:0.4s]"></span>
+                </div>
+            `;
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return id;
+        }
+
+        function removeLoadingIndicator(id) {
+            const loader = document.getElementById(id);
+            if(loader) loader.remove();
+        }
+
+        async function callGeminiAPI(query, retries = 5, delay = 1000) {
+            const systemPrompt = `당신은 우수한 건축학과 5년제 재학생 '장지해'의 개인 설계 스튜디오 AI 조력자입니다. 
+            주요 프로젝트 테마인 '경계 없는 전시장', '나무그늘 파빌리온', '수직 도서관', '한옥 필지를 품은 주택'의 미니멀리즘 설계 기법을 잘 인지하고 있습니다.
+            사용자가 건축 도면 컨셉, 공간 배치 방식, 모던/미니멀 양식의 가구 및 자재 톤, 또는 학부 설계 오픈 크리틱 대응 방향을 질문하면, 날카롭고 이성적이며 지적인 공학·예술학도의 목소리로 명확한 설계 가이드를 제시해 주세요.`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: query }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.candidates?.[0]?.content?.parts?.[0]?.text || "설계 컨셉에 유익한 피드백을 전달할 수 있도록 질문을 한 번 더 다듬어 주세요.";
+                    }
+                } catch (error) {
+                    // 백오프 대기
+                }
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            }
+
+            throw new Error("API call failed");
+        }
+
+        // 7. 문의하기 폼 처리 및 커스텀 알림 시스템
+        const contactForm = document.getElementById('contact-form');
+        const customAlert = document.getElementById('custom-alert');
+        const alertMessage = document.getElementById('alert-message');
+
+        function showAlert(message) {
+            alertMessage.innerText = message;
+            customAlert.classList.remove('translate-y-20', 'opacity-0');
+            customAlert.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                customAlert.classList.remove('translate-y-0', 'opacity-100');
+                customAlert.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showAlert('SUCCESSFULLY SENT: 메시지가 정상 송신되었습니다.');
+            contactForm.reset();
+        });
+    </script>
+</body>
+</html>
